@@ -25,16 +25,17 @@ cp gitlab-mirrors/gitlab-mirror.sh /srv/gitlab/FT/tools/
 
 ```
 
-### 新增專案時 
+### 新增(需同步)專案時 
 
 1. Crate Project (in WEBUI)
 	1. Project name : xxx(同 外部專案) 
 	2. 需屬於某一個Group Ex:MPT   (URL: http://{IP}:{port}/mpt/xxx)
 	3. 設定屬性
 		1. Private (屬於某一個Group Ex:MPT)
-		2. **空**專案
+		2. **空**專案 (不要Readme.md)
 
 2. 建立 Sync 機制( in OS) 
+
 	ref: https://github.com/mrts/git-mirror
 	
 	1. 操作:

@@ -3,6 +3,25 @@
 
 ## 系統設定 
 [維護紀錄](log.md)
+gitlab
+```
+version: '3.9'
+services:
+  git:
+    image: gitlab/gitlab-ce
+    container_name: gitlab
+    init: true
+    ports:
+      - 11080:80
+    volumes:
+      - ./gitlab_file/config:/etc/gitlab
+      - ./gitlab_file/logs:/var/log/gitlab
+      - ./gitlab_file/data:/var/opt/gitlab
+```
+reset root password
+```
+docker exec -it {container名稱} gitlab-rake "gitlab:password:reset[root]"
+```
 
 ### 目前的 Group 
 1. MPT
@@ -14,6 +33,7 @@
 	* MPT: Maintainer (Push)
 3. alan
 	* MPT: Reporter (Pull Only)
+
 
 ## Gitlab-Mirrors 
 

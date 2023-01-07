@@ -29,7 +29,7 @@ docker exec -it {container名稱} gitlab-rake "gitlab:password:reset[root]"
 ```
 mkdir -p /srv/gitlab/FT/tools
 mkdir -p /srv/gitlab/FT/mirrors
-cp gitlab-mirrors-sh/gitlab-mirror.sh /srv/gitlab/FT/tools/
+cp gitlab-mirrors-sh/gitlab-mirrors.sh /srv/gitlab/FT/tools/
 mkdir -p /srv/gitlab/FT/logs/mirrors
 
 

@@ -8,7 +8,7 @@ COPY requirements.txt /webapi/
 RUN pip3 install -r requirements.txt
 
 # 將內容複製到工作目錄中
-COPY src/templates/* /webapi/templates
+COPY src/templates/* /webapi/templates/
 COPY src/app.py /webapi/
 
 # 執行python的指令語法

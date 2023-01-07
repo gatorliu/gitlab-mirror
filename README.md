@@ -35,7 +35,14 @@ mkdir -p /srv/gitlab/FT/logs/mirrors
 
 mkdir -p /srv/gitlab/FT/gma
 mkdir -p /srv/gitlab/FT/logs/gma
-cp gitlab-mirrors-api.tar /srv/gitlab/FT/gma  # or build docker:  `build image built -t  gitlab-mirrors-api .`
+
+
+# load Docker Image:
+# Also can  build docker form Dockerfile:  `build image built -t  gitlab-mirrors-api .`
+cp gitlab-mirrors-api.tgz   
+gunzip -c /srv/gitlab/FT/gma/mycontainer.tgz | docker load
+
+
 cp gitlab-mirrors-api/docker-compose.yml.sample /srv/gitlab/FT/gma/docker-compose.yml
 cd /srv/gitlab/FT/gma
 docker-compose up -d

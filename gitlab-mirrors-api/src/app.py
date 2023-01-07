@@ -30,17 +30,24 @@ def hello_world():
 
 @app.route('/mirror/<project>')
 def mirror(project):
-    ret= {'error':0}
+    ret= {'status':'Success'}
     try:
         app.logger.info(f'mirror project: [{project}]: start')
-        repo = Repo(os.path.join('repos', project+'.git'))
-        repo.remotes.origin.fetch(prune=True)
-        repo.remotes.target.push(mirror=True)
-        
+        repodir = os.path.join('repos', project+'.git')
+        if os.path.isdir(repodir):
+            repo = Repo()
+            repo.remotes.origin.fetch(prune=True)
+            repo.remotes.target.push(mirror=True)
+        else:
+            ret= {  'status':'Failed'
+                    , 'reason': f'Project({project}) is not exists.'
+                 }
     except:
         t = traceback.format_exc()
         app.logger.error(t)
-        ret= {'error':1, 'traceback':t}
+        ret= {'status':'Failed'
+           , 'reason': 'Unknow error.'
+            , 'traceback':t}
 
     app.logger.info(f'mirror project: [{project}]: done')
     return jsonify(ret)

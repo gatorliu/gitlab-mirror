@@ -35,7 +35,7 @@ def mirror(project):
         app.logger.info(f'mirror project: [{project}]: start')
         repodir = os.path.join('repos', project+'.git')
         if os.path.isdir(repodir):
-            repo = Repo()
+            repo = Repo(repodir)
             repo.remotes.origin.fetch(prune=True)
             repo.remotes.target.push(mirror=True)
         else:

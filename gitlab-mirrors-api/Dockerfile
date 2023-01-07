@@ -9,7 +9,7 @@ RUN pip3 install -r requirements.txt
 
 # 將內容複製到工作目錄中
 ADD src/templates /webapi/
-COPY srv/app.py /webapi/
+COPY src/app.py /webapi/
 
 # 執行python的指令語法
 CMD ["python3","app.py"]

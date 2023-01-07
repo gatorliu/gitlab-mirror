@@ -35,8 +35,8 @@ mkdir -p /srv/gitlab/FT/logs/mirrors
 
 mkdir -p /srv/gitlab/FT/gma
 mkdir -p /srv/gitlab/FT/logs/gma
-cp gitlab-morrors-api.tar /srv/gitlab/FT/gma
-cp gitlab-morrors-api/docker-compose.yml.sample /srv/gitlab/FT/gma/docker-compose.yml
+cp gitlab-mirrors-api.tar /srv/gitlab/FT/gma  # or build docker:  `build image built -t  gitlab-mirrors-api .`
+cp gitlab-mirrors-api/docker-compose.yml.sample /srv/gitlab/FT/gma/docker-compose.yml
 cd /srv/gitlab/FT/gma
 docker-compose up -d
 

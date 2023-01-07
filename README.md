@@ -5,18 +5,6 @@
 [維護紀錄](log.md)
 gitlab
 ```
-version: '3.9'
-services:
-  git:
-    image: gitlab/gitlab-ce
-    container_name: gitlab
-    init: true
-    ports:
-      - 11080:80
-    volumes:
-      - ./gitlab_file/config:/etc/gitlab
-      - ./gitlab_file/logs:/var/log/gitlab
-      - ./gitlab_file/data:/var/opt/gitlab
 ```
 reset root password
 ```
@@ -29,7 +17,7 @@ docker exec -it {container名稱} gitlab-rake "gitlab:password:reset[root]"
 ### 目前的 User 
 
 1. root  		
-2. sync01_push 	(專門用於 sync MPT 的帳號)
+2. sync01 	(專門用於 sync 的帳號)
 	* MPT: Maintainer (Push)
 3. alan
 	* MPT: Reporter (Pull Only)
@@ -41,7 +29,19 @@ docker exec -it {container名稱} gitlab-rake "gitlab:password:reset[root]"
 ```
 mkdir -p /srv/gitlab/FT/tools
 mkdir -p /srv/gitlab/FT/mirrors
-cp gitlab-mirrors/gitlab-mirror.sh /srv/gitlab/FT/tools/
+cp gitlab-mirrors-sh/gitlab-mirror.sh /srv/gitlab/FT/tools/
+mkdir -p /srv/gitlab/FT/logs/mirrors
+
+
+mkdir -p /srv/gitlab/FT/gma
+mkdir -p /srv/gitlab/FT/logs/gma
+cp gitlab-morrors-api.tar /srv/gitlab/FT/gma
+cp gitlab-morrors-api/docker-compose.yml.sample /srv/gitlab/FT/gma/docker-compose.yml
+cd /srv/gitlab/FT/gma
+docker-compose up -d
+
+# modify /etc/hosts
+127.0.0.1 gitlab.localhost
 
 ```
 
@@ -64,9 +64,11 @@ cp gitlab-mirrors/gitlab-mirror.sh /srv/gitlab/FT/tools/
 	cd /srv/gitlab/FT/mirrors
 	git clone --mirror http://{username}:{password}@{remoteIP}:{port}/.../{project_name}.git
 	cd {project_name}.git
-	git remote add --mirror=push target http://{username}:{password}@127.0.0.1:{port}/.../{project_name}.git
+	git remote add --mirror=push target http://{username}:{password}@gitlab.localhost:{port}/.../{project_name}.git
 	```
+	PS: gitlab.localhost 不可以 127.0.0.1 (否則 mirror-api docker會有問題)
+
 	2. Crontab Ex:
 	```
-	30 8 * * *   /srv/gitlab/FT/tools/gitlab-mirror.sh {project_name}.git
+	30 8 * * *   /srv/gitlab/FT/tools/gitlab-mirror.sh {project_name}.git >> /srv/gitlab/FT/logs/mirrors/{project_name}.log
 	```

@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  git:
+    image: gitlab-mirrors-api
+    container_name: gma
+    restart: always
+    privileged: true
+    ports:
+      - '8080:5000'
+    extra_hosts:
+      - 'gitlab.localhost:host-gateway'
+    volumes:
+      - '/srv/gitlab/FT/mirrors:/webapi/repos'
+      - '/srv/gitlab/FT/logs/gma:/webapi/logs'
+```

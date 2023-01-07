@@ -1,11 +1,15 @@
-# 建置最基礎的image也就是python3.9
 FROM python:3.7
-# 定義當前的目錄位置
-WORKDIR /gitlab-mirrors-api
-# 將內容複製到工作目錄中
-ADD docker /gitlab-mirrors-api
 
-# 運行pip3來安裝Flask應用程序的依賴套件
+WORKDIR /webapi
+RUN mkdir -p /webapi/logs
+RUN mkdir -p /webapi/repos
+
+COPY requirements.txt /webapi/
 RUN pip3 install -r requirements.txt
+
+# 將內容複製到工作目錄中
+ADD src/templates /webapi/
+COPY srv/app.py /webapi/
+
 # 執行python的指令語法
 CMD ["python3","app.py"]

@@ -3,10 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>GITLAB-MIRRORS-API</title>
+    <script src="{{url_for('static', filename='jquery-3.6.3.min.js')}}"></script>
+    <style>
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #aaa;
+        opacity: 1; /* Firefox */
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #aaa;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #aaa;
+    }
+    footer {
+        position:absolute;
+        bottom:10px;
+    }
+    </style>
 </head>
 <body>
-    <h1>GITLAB-MIRRORS-API</h1>
-
-    <div style="font-size:x-large"><B>USAGE:</B>[GET] {{url_root}}mirror/{PORJECT_NAME}</div>
+    <h1>
+    GITLAB-MIRRORS-API
+    <version style="color:gray; font-size: x-small;">version: 1.0</version>
+    </h1>
+    <hr>
+    <!-- div style="font-size:xx-small"><B>USAGE:</B>[GET] {{url_root}}mirror/{PORJECT_NAME}</div -->
+    <form id="form01">
+    <input id="project" name="project" placeholder="Project Name" style="font-size:x-large; margin-top:30px;margin-left:30px; border: none; border-bottom: solid 1px black; width: 150px;">
+    <button type="submit" style="font-size:x-large; margin-left:10px;">Mirror Now</button></div>
+    </form>
+    
+    <h2 id="result_label" style="margin-top:30px;margin-left:30px;"></h2>
+    <pre id="result" style="color:green; font-size: x-large; font-weight: bold; margin-left:30px;"></pre>
+    <footer>&copy;2023 FT</footer>
 </body>
+<script>
+    baseurl = "{{url_root}}mirror/";
+    $(document).ready(function() {
+        $('#form01').on('submit', function() {
+            $("#result").html("")
+            var pname = $("#project").val().trim();
+            if (pname =='') {
+                $("#result_label").html("Please input `Project name`.")
+            } else {
+                $("#result_label").html("Running......")
+                try {
+                    $.get( baseurl + pname , function(data, status) {
+                        if (status=='success') {
+                            $("#result_label").html("Mirror project '" + pname + "' result:")
+                            $("#result").html(JSON.stringify(data, undefined, 4).replace(/\\n/g, '<br />'))
+                        } else {
+                            $("#result_label").html("Mirror project '" + pname + "' result:")
+                            $("#result").html("AJAX Error:\nStatus: " + status)
+                        }
+                    });
+                } catch (error) {
+                    $("#result_label").html("Mirror project '" + pname + "' result:")
+                    $("#result").html(error)
+                }
+            }
+            $("#project").val('');
+            return false;
+        });
+    });
+</script>
 </html>

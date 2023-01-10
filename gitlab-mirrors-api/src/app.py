@@ -56,6 +56,9 @@ if __name__ == '__main__':
     app.debug = True
     handler = TimedRotatingFileHandler(
         os.path.join("logs","flask.log"), when="D", interval=1, backupCount=15, encoding="UTF-8", delay=False, utc=True)
+    logging_format = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+    handler.setFormatter(logging_format)
     app.logger.addHandler(handler)
     app.run(debug=True, host='0.0.0.0')
     
